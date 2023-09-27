@@ -1,1 +1,1 @@
-web: java -jar  build/libs/org.humbleshuttler.parkinglot-0.0.1.jar
+web: build/install/org.humbleshuttler.parkinglot/bin/org.humbleshuttler.parkinglot
