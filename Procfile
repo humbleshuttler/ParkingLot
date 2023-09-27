@@ -1,1 +1,1 @@
-web: build/libs/org.humbleshuttler.parkinglot-all.jar
+web: java -jar  build/libs/org.humbleshuttler.parkinglot-all.jar
