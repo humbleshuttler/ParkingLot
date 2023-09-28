@@ -11,7 +11,7 @@ import org.humbleshuttler.parking.exception.ParkingLotFullException
 import kotlin.math.log
 
 fun Application.configureRouting() {
-    val lot = Lot(Address("2116 jollay st", "", "Durham", "NC", "USA", "27703"), 10)
+    val lot = Lot(Address("2116 jollay st", "", "Durham", "NC", "USA", "27703"), 10000)
     routing {
         get("/") {
             call.respondText("Available lots: $lot")
