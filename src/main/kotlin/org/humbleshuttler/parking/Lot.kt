@@ -4,13 +4,15 @@ import org.humbleshuttler.parking.exception.InvalidReceiptException
 import org.humbleshuttler.parking.exception.ParkingLotFullException
 import java.lang.StringBuilder
 import java.time.Instant
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.random.Random
 
 class Lot(val address: Address, private val parkingCount: Int) {
 
     private var lotId: String = generateId()
-    private var emptySpaceCount = parkingCount
-    private val history = hashMapOf<String, Receipt>()
+    private var emptySpaceCount: AtomicInteger = AtomicInteger(parkingCount)
+    private val history = ConcurrentHashMap<String, Receipt>()
 
 
     override fun toString(): String {
@@ -18,7 +20,7 @@ class Lot(val address: Address, private val parkingCount: Int) {
     }
 
     fun isFull(): Boolean {
-        return emptySpaceCount == 0
+        return emptySpaceCount.get() == 0
     }
 
     fun parkVehicle(): Receipt {
@@ -27,7 +29,7 @@ class Lot(val address: Address, private val parkingCount: Int) {
         }
         val receipt = Receipt.createOnDemand()
         history[receipt.id] = receipt
-        this.emptySpaceCount -= 1
+        this.emptySpaceCount.decrementAndGet()
         return receipt
     }
 
@@ -35,7 +37,7 @@ class Lot(val address: Address, private val parkingCount: Int) {
         val receipt = history[receiptId] ?: throw InvalidReceiptException(receiptId)
         receipt.close()
         // perform payment
-        this.emptySpaceCount += 1
+        this.emptySpaceCount.incrementAndGet()
         return receipt
     }
 
