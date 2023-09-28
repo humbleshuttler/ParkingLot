@@ -24,13 +24,16 @@ class Lot(val address: Address, private val parkingCount: Int) {
     }
 
     fun parkVehicle(): Receipt {
-        if (isFull()) {
-            throw ParkingLotFullException()
+        synchronized(history) {
+            if (isFull()) {
+                throw ParkingLotFullException()
+            }
+            val receipt = Receipt.createOnDemand()
+            history[receipt.id] = receipt
+            this.emptySpaceCount.decrementAndGet()
+            return receipt
         }
-        val receipt = Receipt.createOnDemand()
-        history[receipt.id] = receipt
-        this.emptySpaceCount.decrementAndGet()
-        return receipt
+
     }
 
     fun exitVehicle(receiptId: String): Receipt {
