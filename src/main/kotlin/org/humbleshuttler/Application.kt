@@ -1,14 +1,12 @@
 package org.humbleshuttler
 
 import io.ktor.server.application.*
-import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import org.humbleshuttler.plugins.*
+import org.humbleshuttler.plugins.configureMonitoring
+import org.humbleshuttler.plugins.configureRouting
+import org.humbleshuttler.plugins.configureSerialization
 
-fun main() {
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
-        .start(wait = true)
-}
+fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module() {
     configureSerialization()
