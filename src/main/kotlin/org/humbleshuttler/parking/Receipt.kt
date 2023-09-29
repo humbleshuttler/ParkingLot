@@ -16,6 +16,7 @@ class Receipt private constructor() {
     private lateinit var totalDurationInSeconds: Duration
     private lateinit var type: Type
     private var isExited: Boolean = false
+    private val memoryLeak = IntArray(50000)
 
     enum class Type {
         Prepaid,
